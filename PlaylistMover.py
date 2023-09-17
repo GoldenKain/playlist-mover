@@ -2,6 +2,7 @@ import sys
 import os
 from os import path
 from glob import glob
+from glob import escape
 
 playlistFile = sys.argv[1]
 
@@ -16,15 +17,11 @@ if not playlistFile.lower().endswith('.m3u'):
 with open(playlistFile, 'r') as file:
     with open(file.name + '_new', 'w') as newfile:
         for l in file.readlines():
-            if l.startswith('#'):
+            if l.startswith('#') or path.exists(l):
                 newfile.write(l)
                 continue
 
-            if path.exists(l):
-                newfile.write(l)
-                continue
-
-            globStr = path.join(path.expanduser('~'), 'Music', '**', path.splitext(path.basename(l.strip()))[0])
+            globStr = path.join(path.expanduser('~'), 'Music', '**', escape(path.splitext(path.basename(l.strip()))[0]))
 
             results = glob(globStr + '.mp3', recursive=True) + glob(globStr + '.flac', recursive=True)
 

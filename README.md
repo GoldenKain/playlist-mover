@@ -1,0 +1,2 @@
+# playlist-mover
+Simple Python script to attempt to move an M3U playlist from one device to the other by looking up the file names. This script was mostly made for my own personal use-case, but I still thought I'd make it publicly available. Feel free to modify it if your needs differ.

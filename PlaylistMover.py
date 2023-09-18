@@ -1,5 +1,6 @@
 import sys
 import os
+import urllib
 from os import path
 from glob import glob
 from glob import escape
@@ -17,7 +18,13 @@ if not playlistFile.lower().endswith('.m3u'):
 with open(playlistFile, 'r') as file:
     with open(file.name + '_new', 'w') as newfile:
         for l in file.readlines():
-            if l.startswith('#') or path.exists(l):
+            if l.startswith('#'):
+                newfile.write(l)
+                continue
+
+            l = urllib.parse.unquote(urllib.parse.urlparse(l).path, errors='replace')
+
+            if path.exists(l):
                 newfile.write(l)
                 continue
 

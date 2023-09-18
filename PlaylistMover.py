@@ -1,9 +1,7 @@
 import sys
-import os
-import urllib
-from os import path
-from glob import glob
-from glob import escape
+from os import path, rename
+from glob import glob, escape
+from urllib.parse import unquote, urlparse
 
 playlistFile = sys.argv[1]
 
@@ -22,7 +20,7 @@ with open(playlistFile, 'r') as file:
                 newfile.write(l)
                 continue
 
-            l = urllib.parse.unquote(urllib.parse.urlparse(l).path, errors='replace')
+            l = unquote(urlparse(l).path, errors='replace')
 
             if path.exists(l):
                 newfile.write(l)
@@ -43,5 +41,5 @@ with open(playlistFile, 'r') as file:
             else:
                 newfile.write(results[0] + '\n')
 
-os.rename(playlistFile, playlistFile + '_old')
-os.rename(playlistFile + '_new', playlistFile)
+rename(playlistFile, playlistFile + '_old')
+rename(playlistFile + '_new', playlistFile)
